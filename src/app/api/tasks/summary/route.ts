@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
       }
 
       days[dateKey].tasks.push(task);
-      days[dateKey].totalHours += Number(task.timeTaken ?? 0);
+      days[dateKey].totalHours += Number(task.durationHours ?? 0);
     }
 
     // Calculate total hours across entire range

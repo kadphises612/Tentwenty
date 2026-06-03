@@ -10,3 +10,25 @@ export function formatDate(date: Date | string): string {
 
   return `${year}-${month}-${day}`;
 }
+
+/**
+ * Formats a date range into a human-readable string.
+ *
+ * Examples:
+ * - 2024-01-21 → 2024-01-26 => "21 - 26 January, 2024"
+ */
+export function formatDateRange(startDate: string, endDate: string) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const startDay = start.getDate();
+  const endDay = end.getDate();
+
+  const month = end.toLocaleString('en-US', {
+    month: 'long'
+  });
+
+  const year = end.getFullYear();
+
+  return `${startDay} - ${endDay} ${month}, ${year}`;
+}

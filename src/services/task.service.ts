@@ -15,3 +15,18 @@ export async function createTask(payload: CreateTaskDto) {
 
   return response.json();
 }
+
+export async function getTaskSummary(startDate: string, endDate: string) {
+  const res = await fetch(
+    `http://localhost:3000/api/tasks/summary?startDate=${startDate}&endDate=${endDate}`,
+    {
+      cache: 'no-store'
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch task summary');
+  }
+
+  return res.json();
+}

@@ -3,10 +3,11 @@ import DaySection from './DaySection';
 import TimesheetHeader from './TimesheetHeader';
 import { TimesheetProps } from './types';
 
-export default function Timesheet({ dateRange }: TimesheetProps) {
+export default function Timesheet({ dateRange, weekTitle }: TimesheetProps) {
   const totalHours = dateRange.reduce(
     (sum, day) =>
-      sum + day.tasks.reduce((taskSum, task) => taskSum + task.hours, 0),
+      sum +
+      day.tasks.reduce((taskSum, task) => taskSum + task.durationHours, 0),
     0
   );
 
@@ -14,7 +15,7 @@ export default function Timesheet({ dateRange }: TimesheetProps) {
     <div className="rounded-xl bg-white p-8 shadow">
       <TimesheetHeader
         title="This week's timesheet"
-        range="21 - 26 January, 2024"
+        range={weekTitle}
         totalHours={totalHours}
         targetHours={40}
       />

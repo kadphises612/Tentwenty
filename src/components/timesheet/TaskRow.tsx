@@ -1,8 +1,8 @@
 import { MoreHorizontal } from 'lucide-react';
-import { Task } from './types';
+import { TaskDocument } from '@/models/Tasks';
 
 interface Props {
-  task: Task;
+  task: TaskDocument;
 }
 
 export default function TaskRow({ task }: Props) {
@@ -11,7 +11,7 @@ export default function TaskRow({ task }: Props) {
       <span className="font-medium text-gray-900">{task.name}</span>
 
       <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-500">{task.hours} hrs</span>
+        <span className="text-sm text-gray-500">{task.durationHours} hrs</span>
 
         <span className="rounded bg-primary-100 px-3 py-1 text-xs text-primary-800">
           {task.project}

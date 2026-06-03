@@ -1,37 +1,19 @@
 import Timesheet from '@/components/timesheet/Timesheet';
+import { formatDateRange } from '@/lib/formatDate';
+import { transformSummaryToDateRange } from '@/lib/formatTimesheetData';
+import { getTaskSummary } from '@/services/task.service';
 
-const dateRange = [
-  {
-    date: '2026-06-01',
-    tasks: [
-      {
-        id: '1',
-        name: 'Homepage Development',
-        project: 'Website',
-        hours: 4
-      },
-      {
-        id: '2',
-        name: 'API Integration',
-        project: 'Website',
-        hours: 2
-      }
-    ]
-  },
-  {
-    date: '2026-06-02',
-    tasks: []
-  },
-  {
-    date: '2026-06-03',
-    tasks: []
-  }
-];
+export default async function Page() {
+  const startDate = '2026-06-01';
+  const endDate = '2026-06-07';
 
-export default function Page() {
+  const summary = await getTaskSummary(startDate, endDate);
+  const dateRange = transformSummaryToDateRange(summary);
+
+  const weekTitle = formatDateRange(startDate, endDate);
   return (
     <div className="w-full gap-4 rotate-0 opacity-100 p-24">
-      <Timesheet dateRange={dateRange} />
+      <Timesheet dateRange={dateRange} weekTitle={weekTitle} />
     </div>
   );
 }
