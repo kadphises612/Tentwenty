@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Calendar } from 'lucide-react';
 import { DateRange } from 'react-date-range';
 import { format } from 'date-fns';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface DateRangeFilterProps {
   value: {
@@ -18,9 +19,14 @@ export default function DateRangeFilter({
   onChange
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(dropdownRef, () => {
+    setOpen(false);
+  });
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="flex h-12 min-w-[220px] items-center justify-between rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700">

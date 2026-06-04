@@ -3,9 +3,10 @@
 import { useRouter } from 'next/navigation';
 
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { signOut } from 'next-auth/react';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 export default function Header() {
   const router = useRouter();
@@ -15,6 +16,13 @@ export default function Header() {
   const user = {
     name: 'John Doe'
   };
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(dropdownRef, () => {
+    setOpen(false);
+  });
+
   return (
     <header className="h-16 border-b border-slate-200 bg-white">
       <div className="flex h-full items-center justify-between px-6">
@@ -30,7 +38,7 @@ export default function Header() {
           </span>
         </div>
 
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setOpen(!open)}
             className="flex items-center gap-2   px-4 py-2">
