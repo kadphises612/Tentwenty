@@ -6,6 +6,8 @@ interface Props {
 }
 
 export default function TimesheetTable({ weeks }: Props) {
+  console.log(weeks);
+
   return (
     <div className="overflow-hidden rounded-xl border bg-white border-gray-200">
       <table className="w-full table-fixed">

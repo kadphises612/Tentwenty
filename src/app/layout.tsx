@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ModalProvider } from '@/components/providers/ModalProvider';
-
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { Toaster } from 'sonner';
 import './globals.css';
 

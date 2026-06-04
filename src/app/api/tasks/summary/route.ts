@@ -7,6 +7,7 @@ import { formatDate } from '@/lib/formatDate';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
     const { searchParams } = new URL(request.url);
     /**
      * Extract startDate and endDate from queryparams
@@ -39,8 +40,6 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    await connectDB();
 
     /**
      * Get all the tasks

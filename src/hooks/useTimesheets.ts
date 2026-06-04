@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 
 import { getWeeks } from '@/services/week.service';
-import { WeekSummary } from '@/types/week';
+import { WeekStatus, WeekSummary } from '@/types/week';
 
 export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
   const [weeks, setWeeks] = useState<WeekSummary[]>([]);
+
   const [page, setPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const [status, setStatus] = useState<WeekStatus | ''>('');
 
   const [totalPages, setTotalPages] = useState(0);
   const [totalWeeks, setTotalWeeks] = useState(0);
@@ -24,7 +26,7 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
         setIsLoading(true);
         setError(null);
 
-        const response = await getWeeks(year, page, limit);
+        const response = await getWeeks(year, page, limit, status);
 
         if (!mounted) return;
 
@@ -49,7 +51,7 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
     return () => {
       mounted = false;
     };
-  }, [year, page, limit]);
+  }, [year, page, limit, status]);
 
   const nextPage = () => {
     if (page < totalPages) {
@@ -72,17 +74,41 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
     setLimit(pageSize);
   };
 
+  const updateStatus = (newStatus: WeekStatus | '') => {
+    setPage(1);
+    setStatus(newStatus);
+  };
+
+  const refresh = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await getWeeks(year, page, limit, status);
+
+      setWeeks(response.weeks);
+      setTotalPages(response.totalPages);
+      setTotalWeeks(response.totalWeeks);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     weeks,
     page,
     limit,
+    status,
     totalPages,
     totalWeeks,
     isLoading,
     error,
     setPage: goToPage,
     setLimit: updatePageSize,
+    setStatus: updateStatus,
     nextPage,
-    previousPage
+    previousPage,
+    refresh
   };
 }

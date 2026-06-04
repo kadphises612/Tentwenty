@@ -1,12 +1,13 @@
-import { WeeksResponse } from '@/types/week';
+import { WeeksResponse, WeekStatus } from '@/types/week';
 
 export async function getWeeks(
   year: number,
   page: number,
-  limit: number
+  limit: number,
+  status: WeekStatus | ''
 ): Promise<WeeksResponse> {
   const response = await fetch(
-    `/api/weeks?year=${year}&page=${page}&limit=${limit}`
+    `/api/weeks?year=${year}&page=${page}&limit=${limit}&status=${status}`
   );
 
   if (!response.ok) {
