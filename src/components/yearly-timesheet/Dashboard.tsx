@@ -16,7 +16,8 @@ export default function Dashboard() {
     status,
     setStatus,
     dateRange,
-    setDateRange
+    setDateRange,
+    isLoading
   } = useTimesheets(2026);
 
   console.log('WEEE', weeks);
@@ -29,7 +30,9 @@ export default function Dashboard() {
         dateRange={dateRange}
         setDateRange={setDateRange}
       />
-      <TimesheetTable weeks={weeks} />
+
+      <TimesheetTable weeks={weeks} isLoading={isLoading} />
+
       <TimesheetPagination
         limit={limit}
         setLimit={setLimit}

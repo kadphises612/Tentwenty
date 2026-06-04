@@ -1,11 +1,13 @@
 import { WeekSummary } from './types';
 import TimesheetTableRow from './TimesheetTableRow';
+import Spinner from '../layout/Spinner';
 
 interface Props {
   weeks: WeekSummary[];
+  isLoading: boolean;
 }
 
-export default function TimesheetTable({ weeks }: Props) {
+export default function TimesheetTable({ weeks, isLoading }: Props) {
   console.log(weeks);
 
   return (
@@ -24,9 +26,19 @@ export default function TimesheetTable({ weeks }: Props) {
         </thead>
 
         <tbody>
-          {weeks.map((week) => (
-            <TimesheetTableRow key={week.weekNumber} week={week} />
-          ))}
+          {isLoading ? (
+            <tr>
+              <td colSpan={5} className="py-12 text-center">
+                <div className="flex justify-center">
+                  <Spinner />
+                </div>
+              </td>
+            </tr>
+          ) : (
+            weeks.map((week) => (
+              <TimesheetTableRow key={week.weekNumber} week={week} />
+            ))
+          )}
         </tbody>
       </table>
     </div>
