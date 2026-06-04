@@ -2,6 +2,7 @@ import Timesheet from '@/components/timesheet/Timesheet';
 import { formatDateRange } from '@/lib/formatDate';
 import { transformSummaryToDateRange } from '@/lib/formatTimesheetData';
 import { getTaskSummary } from '@/services/task.service';
+import { cookies } from 'next/headers';
 
 type Props = {
   searchParams: Promise<{
@@ -14,7 +15,9 @@ export default async function Page({ searchParams }: Props) {
   const { startDate = '2026-06-01', endDate = '2026-06-07' } =
     await searchParams;
 
-  const summary = await getTaskSummary(startDate, endDate);
+  const cookieStore = await cookies();
+
+  const summary = await getTaskSummary(startDate, endDate, cookieStore);
   const dateRange = transformSummaryToDateRange(summary);
 
   const weekTitle = formatDateRange(startDate, endDate);
