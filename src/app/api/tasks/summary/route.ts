@@ -4,10 +4,17 @@ import { connectDB } from '@/lib/mongodb';
 import { Task } from '@/models/Tasks';
 import { getDatesInRange } from '@/lib/dates';
 import { formatDate } from '@/lib/formatDate';
+import { auth } from '@/auth';
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
+
+    const session = await auth();
+
+    if (!session) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { searchParams } = new URL(request.url);
     /**
      * Extract startDate and endDate from queryparams

@@ -2,9 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getWeeksForYear } from '@/utils/week.utils';
 import { connectDB } from '@/lib/mongodb';
 import { Task } from '@/models/Tasks';
+import { auth } from '@/auth';
 
 export async function GET(request: NextRequest) {
   await connectDB();
+
+  const session = await auth();
+
+  if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
   const { searchParams } = new URL(request.url);
   /**
    * extract year ,page and limit from the search Params
