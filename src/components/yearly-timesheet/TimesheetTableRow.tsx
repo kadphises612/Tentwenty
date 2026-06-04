@@ -1,12 +1,14 @@
 import { formatDateRange } from '@/lib/formatDate';
 import TimesheetStatusBadge from './TimesheetStatusBadge';
 import { WeekSummary } from './types';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   week: WeekSummary;
 }
 
 export default function TimesheetTableRow({ week }: Props) {
+  const router = useRouter();
   const action =
     week.status === 'missing'
       ? 'Create'
@@ -26,7 +28,15 @@ export default function TimesheetTableRow({ week }: Props) {
         <TimesheetStatusBadge status={week.status} />
       </td>
 
-      <td className="px-6 py-5 text-blue-600 text-end">{action}</td>
+      <td
+        className="px-6 py-5 text-blue-600 text-end cursor-pointer"
+        onClick={() => {
+          router.push(
+            `/weekly-timesheet/?startDate=${week.startDate}&endDate=${week.endDate}`
+          );
+        }}>
+        {action}
+      </td>
     </tr>
   );
 }

@@ -3,9 +3,16 @@ import { formatDateRange } from '@/lib/formatDate';
 import { transformSummaryToDateRange } from '@/lib/formatTimesheetData';
 import { getTaskSummary } from '@/services/task.service';
 
-export default async function Page() {
-  const startDate = '2026-06-01';
-  const endDate = '2026-06-07';
+type Props = {
+  searchParams: Promise<{
+    startDate?: string;
+    endDate?: string;
+  }>;
+};
+
+export default async function Page({ searchParams }: Props) {
+  const { startDate = '2026-06-01', endDate = '2026-06-07' } =
+    await searchParams;
 
   const summary = await getTaskSummary(startDate, endDate);
   const dateRange = transformSummaryToDateRange(summary);

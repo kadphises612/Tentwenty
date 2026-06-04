@@ -5,6 +5,7 @@ import { Minus, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { createTask } from '@/services/task.service';
+import { useRouter } from 'next/navigation';
 
 interface AddTaskModalProps {
   date: string;
@@ -12,6 +13,7 @@ interface AddTaskModalProps {
 
 export default NiceModal.create(({ date }: AddTaskModalProps) => {
   const modal = useModal();
+  const router = useRouter();
 
   //State for form
   const [formData, setFormData] = useState({
@@ -52,7 +54,8 @@ export default NiceModal.create(({ date }: AddTaskModalProps) => {
       });
 
       toast.success('Task added successfully');
-      modal.hide();
+      modal.remove();
+      router.refresh();
     } catch (error) {
       console.error(error);
 
