@@ -1,22 +1,13 @@
-'use client';
-import TimeSheetFilters from '@/components/yearly-timesheet/TimeSheetFilters';
-import TimesheetPagination from '@/components/yearly-timesheet/TimesheetPagination';
-import TimesheetTable from '@/components/yearly-timesheet/TimesheetTable';
-import { useTimesheets } from '@/hooks/useTimesheets';
+import Dashboard from '@/components/yearly-timesheet/Dashboard';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-export default function DashboardPage() {
-  const {
-    weeks,
-    totalPages,
-    page,
-    setPage,
-    limit,
-    setLimit,
-    status,
-    setStatus
-  } = useTimesheets(2026);
+export default async function DashboardPage() {
+  const session = await auth();
 
-  console.log('WEEE', weeks);
+  if (!session) {
+    redirect('/');
+  }
 
   return (
     <div className="w-full rotate-0 opacity-100 p-30 pt-8">
@@ -24,15 +15,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-4">
           Your Timesheets
         </h1>
-        <TimeSheetFilters status={status} setStatus={setStatus} />
-        <TimesheetTable weeks={weeks} />
-        <TimesheetPagination
-          limit={limit}
-          setLimit={setLimit}
-          page={page}
-          totalPages={totalPages}
-          setPage={setPage}
-        />
+        <Dashboard />
       </div>
     </div>
   );

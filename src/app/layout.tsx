@@ -5,6 +5,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { Toaster } from 'sonner';
 import './globals.css';
+import AuthProvider from '@/components/providers/AuthProvider';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -24,10 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <ModalProvider>
-          {children}
-          <Toaster richColors />
-        </ModalProvider>
+        <AuthProvider>
+          <ModalProvider>
+            {children}
+
+            <Toaster richColors />
+          </ModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );
