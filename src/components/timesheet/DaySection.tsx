@@ -30,7 +30,7 @@ export default function DaySection({ day }: Props) {
 
       <div className="space-y-3">
         {day.tasks.map((task) => (
-          <TaskRow key={task.id} task={task} />
+          <TaskRow key={task._id} task={task} />
         ))}
 
         <AddTaskButton date={day.date} onClick={openModal} />
