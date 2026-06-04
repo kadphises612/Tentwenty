@@ -1,3 +1,4 @@
+import Footer from '@/components/layout/Footer';
 import Timesheet from '@/components/timesheet/Timesheet';
 import { formatDateRange } from '@/lib/formatDate';
 import { transformSummaryToDateRange } from '@/lib/formatTimesheetData';
@@ -22,8 +23,10 @@ export default async function Page({ searchParams }: Props) {
 
   const weekTitle = formatDateRange(startDate, endDate);
   return (
-    <div className="w-full gap-4 rotate-0 opacity-100 p-24">
+    <div className="w-full gap-4 rotate-0 opacity-100 p-24 pt-8 pb-4">
       <Timesheet dateRange={dateRange} weekTitle={weekTitle} />
+
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { CreateTaskDto } from '@/types/task';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export async function createTask(payload: CreateTaskDto) {
   const response = await fetch('/api/tasks', {
@@ -19,14 +20,14 @@ export async function createTask(payload: CreateTaskDto) {
 export async function getTaskSummary(
   startDate: string,
   endDate: string,
-  cookieHeader: string
+  cookieHeader: ReadonlyRequestCookies
 ) {
   const res = await fetch(
     `http://localhost:3000/api/tasks/summary?startDate=${startDate}&endDate=${endDate}`,
     {
       cache: 'no-store',
       headers: {
-        Cookie: cookieHeader
+        Cookie: cookieHeader.toString()
       }
     }
   );
