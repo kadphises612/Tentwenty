@@ -1,24 +1,27 @@
 'use client';
 
-import { useState } from 'react';
 import DateRangeFilter from '@/components/filters/DateRangeFilter';
 import StatusFilter from '@/components/filters/StatusFilter';
 import { WeekStatus } from '@/types/week';
 
-interface StatusFilterProps {
+interface TimeSheetFiltersProps {
   status: WeekStatus | '';
   setStatus: (status: WeekStatus | '') => void;
+
+  dateRange: {
+    startDate: Date;
+    endDate: Date;
+  };
+
+  setDateRange: (range: { startDate: Date; endDate: Date }) => void;
 }
 
 export default function TimeSheetFilters({
   status,
-  setStatus
-}: StatusFilterProps) {
-  const [dateRange, setDateRange] = useState({
-    startDate: new Date(),
-    endDate: new Date()
-  });
-
+  setStatus,
+  dateRange,
+  setDateRange
+}: TimeSheetFiltersProps) {
   return (
     <div className="flex gap-4 mb-3 p-3">
       <DateRangeFilter value={dateRange} onChange={setDateRange} />

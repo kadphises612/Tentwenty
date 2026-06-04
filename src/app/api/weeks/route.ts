@@ -20,6 +20,8 @@ export async function GET(request: NextRequest) {
   const page = Number(searchParams.get('page') ?? 1);
   const limit = Number(searchParams.get('limit') ?? 5);
   const status = searchParams.get('status');
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
 
   if (!year) {
     return NextResponse.json(
@@ -69,8 +71,26 @@ export async function GET(request: NextRequest) {
 
   let filteredWeeks = weeksWithHours;
 
+  /**
+   * Filter weeks that overlap the selected date range.
+   */
+  if (startDate && endDate) {
+    const rangeStart = new Date(startDate);
+    const rangeEnd = new Date(endDate);
+
+    filteredWeeks = filteredWeeks.filter((week) => {
+      const weekStart = new Date(week.startDate);
+      const weekEnd = new Date(week.endDate);
+
+      return weekStart <= rangeEnd && weekEnd >= rangeStart;
+    });
+  }
+
+  /**
+   * Filter by week status.
+   */
   if (status) {
-    filteredWeeks = weeksWithHours.filter((week) => week.status === status);
+    filteredWeeks = filteredWeeks.filter((week) => week.status === status);
   }
   const totalWeeks = filteredWeeks.length;
 

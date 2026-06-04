@@ -4,10 +4,12 @@ export async function getWeeks(
   year: number,
   page: number,
   limit: number,
-  status: WeekStatus | ''
+  status: WeekStatus | '',
+  startDate: string,
+  endDate: string
 ): Promise<WeeksResponse> {
   const response = await fetch(
-    `/api/weeks?year=${year}&page=${page}&limit=${limit}&status=${status}`
+    `/api/weeks?year=${year}&page=${page}&limit=${limit}&status=${status}&startDate=${startDate}&endDate=${endDate}`
   );
 
   if (!response.ok) {

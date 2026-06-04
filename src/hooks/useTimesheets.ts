@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { getWeeks } from '@/services/week.service';
 import { WeekStatus, WeekSummary } from '@/types/week';
+import { formatDate } from '@/lib/formatDate';
 
 export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
   const [weeks, setWeeks] = useState<WeekSummary[]>([]);
@@ -15,6 +16,11 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
   const [totalPages, setTotalPages] = useState(0);
   const [totalWeeks, setTotalWeeks] = useState(0);
 
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(2026, 0, 1),
+    endDate: new Date(2026, 11, 31)
+  });
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,9 +31,14 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
       try {
         setIsLoading(true);
         setError(null);
-
-        const response = await getWeeks(year, page, limit, status);
-
+        const response = await getWeeks(
+          year,
+          page,
+          limit,
+          status,
+          formatDate(dateRange.startDate),
+          formatDate(dateRange.endDate)
+        );
         if (!mounted) return;
 
         setWeeks(response.weeks);
@@ -51,7 +62,7 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
     return () => {
       mounted = false;
     };
-  }, [year, page, limit, status]);
+  }, [year, page, limit, status, dateRange]);
 
   const nextPage = () => {
     if (page < totalPages) {
@@ -79,11 +90,22 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
     setStatus(newStatus);
   };
 
+  const updateDateRange = (range: { startDate: Date; endDate: Date }) => {
+    setPage(1);
+    setDateRange(range);
+  };
   const refresh = async () => {
     setIsLoading(true);
 
     try {
-      const response = await getWeeks(year, page, limit, status);
+      const response = await getWeeks(
+        year,
+        page,
+        limit,
+        status,
+        formatDate(dateRange.startDate),
+        formatDate(dateRange.endDate)
+      );
 
       setWeeks(response.weeks);
       setTotalPages(response.totalPages);
@@ -109,6 +131,8 @@ export function useTimesheets(year = 2026, initialPage = 1, initialLimit = 5) {
     setStatus: updateStatus,
     nextPage,
     previousPage,
+    dateRange,
+    setDateRange: updateDateRange,
     refresh
   };
 }

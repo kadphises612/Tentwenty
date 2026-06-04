@@ -14,14 +14,21 @@ export default function Dashboard() {
     limit,
     setLimit,
     status,
-    setStatus
+    setStatus,
+    dateRange,
+    setDateRange
   } = useTimesheets(2026);
 
   console.log('WEEE', weeks);
 
   return (
     <div>
-      <TimeSheetFilters status={status} setStatus={setStatus} />
+      <TimeSheetFilters
+        status={status}
+        setStatus={setStatus}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+      />
       <TimesheetTable weeks={weeks} />
       <TimesheetPagination
         limit={limit}
