@@ -23,7 +23,7 @@ export async function getTaskSummary(
   cookieHeader: ReadonlyRequestCookies
 ) {
   const res = await fetch(
-    `http://localhost:3000/api/tasks/summary?startDate=${startDate}&endDate=${endDate}`,
+    `${process.env.APP_URL}/api/tasks/summary?startDate=${startDate}&endDate=${endDate}`,
     {
       cache: 'no-store',
       headers: {
